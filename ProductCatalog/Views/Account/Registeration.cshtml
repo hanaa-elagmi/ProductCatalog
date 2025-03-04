@@ -1,14 +1,14 @@
 ﻿@model ProductCatalog.ViewModel.RegistrationViewModel
 
 @{
+    Layout = "_AuthLayout";
     ViewData["Title"] = "Registeration";
 }
 
-<h1>Create New Account</h1>
-
-
-<hr />
-<div class="row align-items-center justify-content-between">
+<div class="row align-items-center justify-content-center w-100 register">
+    <div class="text-center m-5">
+        <img src="~/assets/images/register.svg" class="w-25" />
+    </div>
     <div class="col-md-6">
         <form asp-action="Registeration">
             <div asp-validation-summary="All" class="text-danger"></div>
@@ -45,19 +45,19 @@
             <div class="form-group pt-3 m-3">
                 <a asp-controller="Home" asp-action="Index" class="btn btn-icon btn-dark w-100"><i class="fa-solid fa-arrow-right-to-bracket fs-4 me-2"></i>Register</a>
             </div>
+            <div class="m-3 text-center">
+                <a asp-controller="Account" asp-action="Login" class="text-dark">Already have an account?</a>
+            </div>
         </form>
     </div>
+
     
-    <div class="col-md-5">
-        <div class="">
-            <img src="~/assets/images/register.svg" class="w-100" />
-        </div>
-       
-    </div>
 </div>
 
 
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

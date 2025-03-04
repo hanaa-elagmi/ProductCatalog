@@ -31,6 +31,7 @@ namespace ProductCatalog.Controllers.Account
 				user.Email = newUser.Email;
 				user.Address = newUser.Address; 
 				user.PasswordHash = newUser.Password;
+				
 				IdentityResult result=await userManager.CreateAsync(user,newUser.Password);
 
 				if (result.Succeeded) 
