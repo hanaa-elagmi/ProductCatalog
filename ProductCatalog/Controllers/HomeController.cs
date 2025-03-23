@@ -29,7 +29,13 @@ namespace ProductCatalog.Controllers
             {
                 pagination.Products = pagination.Products.Where(p => p.CategoryId == pagination.CategoryId).ToList();
             }
-           
+            if (pagination.ProductName != null) 
+            {
+                pagination.Products = pagination.Products
+                .Where(p => p.Name.Contains(pagination.ProductName, StringComparison.OrdinalIgnoreCase))
+                .ToList();
+
+            }
 
             var totalProducts = pagination.Products.Count();
 

@@ -4,8 +4,11 @@
 }
 
 <div class="bg-white filtermenue row align-items-center p-2">
-    <div class="col-4"></div>
-    <div class="col-4"></div>
+    <div class="col-6">
+        <input type="text" class="form-control form-control-solid ps-14 search" name="search" value="" 
+        placeholder="Search..." data-kt-search-element="input" fdprocessedid="8bv4wn" >
+    </div>
+    <div class="col-2"></div>
     <div class="col-md-4 ">
         <div>
             <select class="form-select" aria-label="Select example" id="categorySelect">
@@ -65,7 +68,7 @@
             @for (int i = 1; i <= Model.PageCount; i++)
             {
                 <li class="page-item" Active-when="@i">
-                    <a asp-action="Index" asp-route-PageIndex="@i" asp-route-CategoryId="@Model.CategoryId" class="page-link">@i</a>
+                    <a asp-action="Index" asp-route-PageIndex="@i" asp-route-CategoryId="@Model.CategoryId"asp-route-Productname="@Model.ProductName" class="page-link">@i</a>
                 </li>
             }
         </ul>
@@ -79,4 +82,20 @@
             window.location.href = "/Home/Index?categoryId=" + categoryId;
         }
     });
+    var searchBtn = document.querySelector(".search");
+    document.addEventListener("keyup", function (e) {
+       
+        if (e.key === "Enter") {
+            let word = searchBtn.value;
+            console.log(word);
+            Productname = word.trim();
+            if(Productname !==""){
+                window.location.href = "/Home/Index?ProductName=" + word;
+
+            }
+
+        }
+    })
+
+   
 </script>
