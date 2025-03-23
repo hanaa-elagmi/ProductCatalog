@@ -1,8 +1,82 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model PaginationViewModel
+@{
+    ViewData["Title"] = "Products";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="bg-white filtermenue row align-items-center p-2">
+    <div class="col-4"></div>
+    <div class="col-4"></div>
+    <div class="col-md-4 ">
+        <div>
+            <select class="form-select" aria-label="Select example" id="categorySelect">
+                <option >Choose Category</option>
+
+                @foreach (var item in Model.Categories)
+                {
+                    //<option value="@item.Id">@item.Name </option>
+                    if (item.Id == Model.CategoryId)
+                    {
+                        <option value="@item.Id" selected>@item.Name</option>
+                    }
+                    else
+                    {
+                        <option value="@item.Id">@item.Name</option>
+                    }
+                }
+
+            </select>
+        </div>
+    </div>
+    
 </div>
+<div class="row g-5">
+    @foreach (var item in Model.Products)
+    {
+        <div class="col-md-3">
+            <div class="card card-bordered">
+                <div class="card-body p-2">
+                    
+
+                    <div class="text-center px-4 py-3">
+                        <img class="mw-100 mh-300px card-rounded-bottom w-100 productImage" alt="" src="@item.Image">
+                    </div>
+                </div>
+
+                <div class="card-header">
+                    <h3 class="card-title">
+                        @(item.Name.Length > 15 ? item.Name.Substring(0, 15) : item.Name)
+                    </h3>
+                    
+                    <div class="card-toolbar">
+                        <a type="button" class="btn btn-sm btn-light" asp-action="Details" asp-controller="Home" asp-route-id="@item.Id">
+                            Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+</div>
+
+ <div class="row">
+    <div class="col-md-12">
+        <ul class="pagination mt-5 mb-5">
+            @for (int i = 1; i <= Model.PageCount; i++)
+            {
+                <li class="page-item" Active-when="@i">
+                    <a asp-action="Index" asp-route-PageIndex="@i" asp-route-CategoryId="@Model.CategoryId" class="page-link">@i</a>
+                </li>
+            }
+        </ul>
+    </div>
+</div>
+
+<script>
+    document.getElementById("categorySelect").addEventListener("change", function () {
+        var categoryId = this.value;
+        if (categoryId !=0) {
+            window.location.href = "/Home/Index?categoryId=" + categoryId;
+        }
+    });
+</script>

@@ -1,0 +1,133 @@
+﻿@model List<ProductCatalog.Models.Product>
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery antiforgery
+
+@{
+    ViewData["Title"] = "Index";
+}
+<div class="text-end">
+    <a asp-action="CreateProduct" class="btn btn-outline btn-outline-dashed btn-outline-primary btn-active-light-primary ">Add</a>
+
+</div>
+<div class="py-5">
+	<div class="table-responsive">
+		<table class="table table-row-bordered table-row-gray-300 gy-7">
+			<thead>
+				<tr class="fw-bold fs-6 text-gray-800">
+                    <th>
+                        Image
+                    </th>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        CreationDate
+                    </th>
+                    <th>
+                        Price
+                    </th>
+                    <th>
+                        StartDate
+                    </th>
+                    <th>
+                        Duration
+                    </th>
+                    <th>
+                        Updated Date
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                    <th>
+                        UserId
+                    </th>
+                    <th></th>
+				</tr>
+			</thead>
+			<tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td >
+                            <img src="@item.Image" id="ProductImg" />
+
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CreationDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Price)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StartDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Duration)
+                        </td>
+                        <td>
+                            @item.updatedDate
+                        </td>
+                        <td>
+                            <span class="badge badge-light-@(item.IsDeleted?"danger":"success")">
+                                @(item.IsDeleted ? "Deleted" : "Available")
+
+                            </span>
+                           
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UserId)
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-sm btn-icon btn-color-primary btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+                                <!--begin::Svg Icon | path: icons/duotune/general/gen024.svg-->
+                                <span class="svg-icon svg-icon-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24">
+                                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                            <rect x="5" y="5" width="5" height="5" rx="1" fill="currentColor"></rect>
+                                            <rect x="14" y="5" width="5" height="5" rx="1" fill="currentColor" opacity="0.3"></rect>
+                                            <rect x="5" y="14" width="5" height="5" rx="1" fill="currentColor" opacity="0.3"></rect>
+                                            <rect x="14" y="14" width="5" height="5" rx="1" fill="currentColor" opacity="0.3"></rect>
+                                        </g>
+                                    </svg>
+                                </span>
+                                <!--end::Svg Icon-->
+                            </button>
+
+                            <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg-light-primary fw-semibold w-200px py-3 " data-kt-menu="true" style="z-index: 107;">
+
+                                <!--begin::Menu item-->
+                                <div class="menu-item ">
+                                    @if(!item.IsDeleted){
+                                        <a asp-action="EditProduct" asp-controller="Dashboard" class="menu-link" asp-route-id="@item.Id">
+                                            Edit
+                                        </a>
+                                    }
+                                    
+                                </div>
+                                <!--end::Menu item-->
+                                <!--begin::Menu item-->
+                                <div class="menu-item">
+                                    <a asp-action="DeleteProduct" asp-controller="Dashboard" asp-route-id="@item.Id" class="menu-link flex-stack px-3 js-delete">
+                                         Toggle Status
+                                     </a>
+                                </div>
+                                <!--end::Menu item-->
+
+
+                            </div>
+                        </td>
+                    </tr>
+                }
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<input type="hidden" name="__RequestVerificationToken" value="@antiforgery.GetAndStoreTokens(Context).RequestToken" />
+
+
+
+
+ 

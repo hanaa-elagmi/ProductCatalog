@@ -25,3 +25,20 @@ body {
     padding-top:60px;
     margin-top:60px;
 }
+
+tr td #ProductImg{
+    width:50px !important;
+    height:50px !important;
+}
+.filtermenue{
+    height:60px;
+    margin:20px 0px;
+    border-radius:10px;
+
+}
+.productImage{
+    height:250px;
+    width:250px;
+}
+
+

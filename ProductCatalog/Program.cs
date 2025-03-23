@@ -1,8 +1,11 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
 using ProductCatalog.Data;
+using ProductCatalog.Interfaces;
 using ProductCatalog.Models;
+using ProductCatalog.Reposatories;
 
 namespace ProductCatalog
 {
@@ -16,6 +19,7 @@ namespace ProductCatalog
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connectionString));
+            builder.Services.AddScoped<IProduct, ProductRepo>();
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
             builder.Services.AddRazorPages();
            // builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
@@ -45,8 +49,24 @@ namespace ProductCatalog
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            //app.Use(async (context, next) =>
+            //{
+            //    if (context.Request.Path.StartsWithSegments("/css") ||
+            //        context.Request.Path.StartsWithSegments("/js") ||
+            //        context.Request.Path.StartsWithSegments("/images"))
+            //    {
+            //        context.Request.Path = "/wwwroot" + context.Request.Path;
+            //    }
+            //    await next();
+            //});
+            //app.UseStaticFiles(new StaticFileOptions
+            //{
+            //    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")),
+            //    RequestPath = "/wwwroot"
+            //});
+           
 
-            app.UseRouting();
+			app.UseRouting();
 
             app.UseAuthorization();
 

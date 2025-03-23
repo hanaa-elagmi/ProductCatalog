@@ -1,0 +1,35 @@
+﻿@model Product
+<div class="row justify-content-center align-items-center">
+    <div class="col-md-12">
+        <div class="card shadow-sm w-75 m-auto">
+            <div class="card-header">
+                <h3 class="card-title">@Model.Name</h3>
+                <div class="card-toolbar">
+                    <button type="button" class="btn btn-sm btn-light">
+                        @Model.Price
+                    </button>
+                </div>
+            </div>
+            <div class="card-body p-0">
+                <div class="card-p mb-10">
+
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+
+
+                    <div class="text-center px-4 mt-5 pt-5">
+                        <img class="mw-100 mh-300px card-rounded-bottom" alt="" src="@Model.Image" />
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+     
+    </div>
+    
+    <div class="col-md-12">
+        <div class="backDiv text-center">
+            <a asp-action="Index" asp-controller="Home" class="btn btn-secondary mt-4 backBtn w-75">Back To Home</a>
+
+        </div>
+    </div>
+</div>

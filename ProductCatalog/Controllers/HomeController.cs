@@ -1,32 +1,56 @@
+using Azure;
 using Microsoft.AspNetCore.Mvc;
+using ProductCatalog.Interfaces;
 using ProductCatalog.Models;
+using ProductCatalog.Reposatories;
+using ProductCatalog.ViewModel;
 using System.Diagnostics;
 
 namespace ProductCatalog.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly IProduct productRepo;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IProduct productRepo)
         {
-            _logger = logger;
+            this.productRepo = productRepo;
+        }
+        public IActionResult Index(PaginationViewModel pagination)
+        {
+            pagination.Products = productRepo.GetAllProducts();
+            pagination.Categories = productRepo.GetCategories();
+
+            if (pagination.PageIndex < 1)
+            {
+                pagination.PageIndex = 1;
+            }
+            if (pagination.CategoryId !=0)
+            {
+                pagination.Products = pagination.Products.Where(p => p.CategoryId == pagination.CategoryId).ToList();
+            }
+           
+
+            var totalProducts = pagination.Products.Count();
+
+            var totalPages = (int)Math.Ceiling(totalProducts / (double)8);
+
+            if (pagination.PageIndex > totalPages)
+            {
+                pagination.PageIndex = totalPages;
+            }
+
+            pagination.PageCount = totalPages;
+            pagination.Products = pagination.Products.Skip((pagination.PageIndex - 1) * 8).Take(8).ToList();
+            return View(pagination);
+            
         }
 
-        public IActionResult Index()
+        public IActionResult Details(int id)
         {
-            return View();
+            var product = productRepo.GetProductById(id);
+            return View(product);
         }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+        
     }
 }

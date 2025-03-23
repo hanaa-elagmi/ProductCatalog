@@ -40,6 +40,8 @@ namespace ProductCatalog.Controllers.Account
 
 				if (result.Succeeded) 
 				{
+					//assign the first user as admin and then users
+					await userManager.AddToRoleAsync(user, "User");
 				//create cookie
 					await signInManager.SignInAsync(user, isPersistent: false);
 					return RedirectToAction("Login", "Account");
@@ -91,6 +93,13 @@ namespace ProductCatalog.Controllers.Account
             }
             
 			return View(loginUser);
+        }
+
+     
+        public async Task<IActionResult> Logout()
+        {
+            await signInManager.SignOutAsync();
+            return RedirectToAction(nameof(Login));
         }
     }
 }

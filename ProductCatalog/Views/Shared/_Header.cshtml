@@ -18,7 +18,7 @@
 			<!--end::Aside  toggle-->
 			<!--begin::Logo-->
 			<a asp-controller="Home" asp-action="Index">
-				<img alt="Logo" src="~/assets/images/logo.png" class="h-40px h-lg-50px" />
+				<img alt="Logo" src="~/assets/images/Véon (3).png" class="h-40px h-lg-50px" />
 			</a>
 			<!--end::Logo-->
 		</div>
@@ -127,8 +127,8 @@
 				<div class="btn btn-flex align-items-center bg-hover-white bg-hover-opacity-10 py-2 px-2 px-md-3" data-kt-menu-trigger="click" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end">
 					<!--begin::Name-->
 					<div class="d-none d-md-flex flex-column align-items-end justify-content-center me-2 me-md-4">
-						<span class="text-muted fs-8 fw-semibold lh-1 mb-1">Max</span>
-						<span class="text-white fs-8 fw-bold lh-1">UX Designer</span>
+						<span class="text-muted fs-8 fw-semibold lh-1 mb-1"></span>
+						<span class="text-white fs-8 fw-bold lh-1">@User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value</span>
 					</div>
 					<!--end::Name-->
 					<!--begin::Symbol-->
@@ -151,44 +151,49 @@
 							<!--begin::Username-->
 							<div class="d-flex flex-column">
 								<div class="fw-bold d-flex align-items-center fs-5">
-									Max Smith
+									@User.Identity.Name
 									
 								</div>
-								<a href="#" class="fw-semibold text-muted text-hover-primary fs-7">max@kt.com</a>
+								<a href="#" class="fw-semibold text-muted text-hover-primary fs-7">@User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value</a>
 							</div>
 							<!--end::Username-->
 						</div>
 					</div>
 					<!--end::Menu item-->
 					<!--begin::Menu separator-->
-					<div class="separator my-2"></div>
 					<!--end::Menu separator-->
-					<!--begin::Menu item-->
-					<div class="menu-item px-5">
-						<a href="../../demo14/dist/account/overview.html" class="menu-link px-5">My Profile</a>
-					</div>
-					<!--end::Menu item-->
+					
 					<!--begin::Menu separator-->
 					<div class="separator my-2"></div>
 					<!--end::Menu separator-->
+					
 					<!--begin::Menu item-->
-					<div class="menu-item px-5 my-1">
-						<a href="../../demo14/dist/account/settings.html" class="menu-link px-5">Account Settings</a>
-					</div>
-					<!--end::Menu item-->
-					<!--begin::Menu item-->
-					<div class="menu-item px-5">
-						<a asp-controller="Account" asp-action="Registeration" class="menu-link px-5">Register</a>
-					</div>
-					<!--end::Menu item-->
-					<div class="menu-item px-5">
-						<a asp-controller="Account" asp-action="Login" class="menu-link px-5">Login</a>
-					</div>
-					<!--end::Menu item-->
-					<!--begin::Menu item-->
-					<div class="menu-item px-5">
-						<a href="../../demo14/dist/authentication/layouts/corporate/sign-in.html" class="menu-link px-5">Logout</a>
-					</div>
+					@if (!User.Identity.IsAuthenticated)
+					{
+						
+						<div class="menu-item px-5">
+							<a asp-controller="Account" asp-action="Registeration" class="menu-link px-5">Register</a>
+						</div>
+						<!--end::Menu item-->
+						<div class="menu-item px-5">
+							<a asp-controller="Account" asp-action="Login" class="menu-link px-5">Login</a>
+						</div>
+					}
+					else{
+						
+						
+						<div class="menu-item px-5">
+							<a href="../../demo14/dist/account/overview.html" class="menu-link px-5">My Profile</a>
+						</div>
+						<div class="separator my-2"></div>
+						<div class="menu-item px-5 my-1">
+							<a href="../../demo14/dist/account/settings.html" class="menu-link px-5">Account Settings</a>
+						</div>
+						<div class="menu-item px-5">
+							<a asp-controller="Account" asp-action="Logout" class="menu-link px-5">Logout</a>
+						</div>
+					}
+					
 					<!--end::Menu item-->
 				</div>
 				<!--end::User account menu-->
