@@ -1,0 +1,9 @@
+﻿@model ProfileViewModel
+<div class="profile-Img ">
+    <img src="~/images/undraw_female-avatar_7t6k.svg" class="w-100 " />
+    <form asp-action="ChangePhoto" method="post" enctype="multipart/form-data">
+        <input type="file" name="ProfileImg" />
+        <button type="submit">Upload</button>
+    </form>
+
+</div>

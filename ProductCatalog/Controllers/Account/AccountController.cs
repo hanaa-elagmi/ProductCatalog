@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ProductCatalog.Data;
 using ProductCatalog.Models;
 using ProductCatalog.ViewModel;
+using System.Security.Claims;
 
 namespace ProductCatalog.Controllers.Account
 {
@@ -30,6 +33,7 @@ namespace ProductCatalog.Controllers.Account
 			if (ModelState.IsValid) 
 			{
 				ApplicationUser user = new ApplicationUser();
+				user.FullName = newUser.FullName;
 				user.UserName = newUser.UserName;
 				user.Email = newUser.Email;
 				user.Address = newUser.Address;
@@ -74,14 +78,42 @@ namespace ProductCatalog.Controllers.Account
                 {
                     //check if password is true
                     var result = await signInManager.PasswordSignInAsync(userModel, loginUser.Password, loginUser.RememberMe, false);
-                    //create cookie
-                    if (result.Succeeded)
-                    {
-                        //create cookie
-                        await signInManager.SignInAsync(userModel, loginUser.RememberMe);
-                        return RedirectToAction("Index", "Home");
-                    }
-                    else
+					var roles = await userManager.GetRolesAsync(userModel);
+
+					//create cookie
+					if (result.Succeeded)
+					{
+
+						// Get existing claims
+						var claims = new List<Claim>
+						{
+                            new Claim(ClaimTypes.NameIdentifier, userModel.Id), // ✅ تخزين UserId
+							new Claim(ClaimTypes.Name, userModel.UserName), // Standard username claim
+							new Claim("FullName", userModel.FullName ?? "Unknown"),// Custom FullName claim
+							new Claim(ClaimTypes.Email, userModel.Email)
+							
+						};
+						foreach (var role in roles)
+						{
+							claims.Add(new Claim(ClaimTypes.Role, role));
+						}
+
+						var claimsIdentity = new ClaimsIdentity(claims, IdentityConstants.ApplicationScheme);
+						var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+
+                        // Manually sign in with claims
+                        var authProperties = new AuthenticationProperties
+                        {
+                            IsPersistent = loginUser.RememberMe, 
+                            ExpiresUtc = loginUser.RememberMe ? DateTime.UtcNow.AddDays(14) : (DateTime?)null
+                        };
+
+                        await HttpContext.SignInAsync(IdentityConstants.ApplicationScheme, claimsPrincipal, authProperties);
+
+
+						return RedirectToAction("Index", "Home");
+					}
+					else
                     {
                         ModelState.AddModelError("", "UserName or Password is wrong");
                     }
@@ -101,5 +133,7 @@ namespace ProductCatalog.Controllers.Account
             await signInManager.SignOutAsync();
             return RedirectToAction(nameof(Login));
         }
+
+
     }
 }

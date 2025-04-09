@@ -20,8 +20,13 @@ namespace ProductCatalog
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connectionString));
             builder.Services.AddScoped<IProduct, ProductRepo>();
+            builder.Services.AddScoped<IAccountsetting, AccountSettingRepo>();
+            builder.Services.AddScoped<IUser, UserRepo>();
+
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-            builder.Services.AddRazorPages();
+			builder.Services.AddHttpContextAccessor();
+
+			builder.Services.AddRazorPages();
            // builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
               //  .AddEntityFrameworkStores<ApplicationDbContext>();
             builder.Services.AddControllersWithViews();
@@ -33,7 +38,11 @@ namespace ProductCatalog
                 
                 })
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-            var app = builder.Build();
+
+
+			builder.Services.AddAuthorization();
+
+			var app = builder.Build();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -68,9 +77,11 @@ namespace ProductCatalog
 
 			app.UseRouting();
 
-            app.UseAuthorization();
+			app.UseAuthentication();
+			app.UseAuthorization();
 
-            app.MapControllerRoute(
+
+			app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
             app.MapRazorPages();

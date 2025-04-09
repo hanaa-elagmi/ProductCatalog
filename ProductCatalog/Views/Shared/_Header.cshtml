@@ -1,4 +1,8 @@
-﻿<!--begin::Header-->
+﻿@using ProductCatalog.Reposatories
+@{
+	//var fullName=AccountSettingRepo.
+}
+<!--begin::Header-->
 <div id="kt_header" class="header">
 	<!--begin::Container-->
 	<div class="container-fluid d-flex flex-stack">
@@ -151,8 +155,8 @@
 							<!--begin::Username-->
 							<div class="d-flex flex-column">
 								<div class="fw-bold d-flex align-items-center fs-5">
-									@User.Identity.Name
-									
+									@User.FindFirst("FullName")?.Value
+
 								</div>
 								<a href="#" class="fw-semibold text-muted text-hover-primary fs-7">@User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value</a>
 							</div>
@@ -187,7 +191,7 @@
 						</div>
 						<div class="separator my-2"></div>
 						<div class="menu-item px-5 my-1">
-							<a href="../../demo14/dist/account/settings.html" class="menu-link px-5">Account Settings</a>
+							<a asp-controller="AccountSetting" asp-action="Index" class="menu-link px-5">Account Settings</a>
 						</div>
 						<div class="menu-item px-5">
 							<a asp-controller="Account" asp-action="Logout" class="menu-link px-5">Logout</a>

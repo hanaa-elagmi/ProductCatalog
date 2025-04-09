@@ -1,0 +1,60 @@
+﻿@model ProfileViewModel
+
+
+
+<div class="row g-5">
+    <div class="col-12">
+        <!--begin::Symbol-->
+
+        <div class="profile-Img">
+           <img src="@(!string.IsNullOrEmpty(Model.ProfileImgUrl) ? Model.ProfileImgUrl : Url.Content("~/images/undraw_female-avatar_7t6k.svg"))" class="w-100 mb-3" />
+           
+            
+        </div>
+
+       
+
+    </div>
+   <div class="col-12">
+       <form asp-action="ChangePhoto" method="post" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+                <div class="row justify-content-center">
+                    <div class="col-4 ">
+                        <div class="mb-3">
+                    <input type="file" name="ProfileImg" class="form-control" />
+                </div>
+                    </div>
+                    <div class="col-1 ">
+                         <button type="submit" class="btn btn-dark">Upload</button>
+
+                    </div>
+                </div>
+
+                
+            </form>
+   </div>
+
+    <div class="col-12 mt-5" >
+        <h1 class="text-center">
+            @Model.FullName
+            <a asp-controller="AccountSetting" asp-action="ChangeName"><i class="bi bi-vector-pen fs-5"></i></a>
+
+            
+        </h1>
+    </div>
+    
+    <div class="col-12">
+        <p class="text-center">
+            @Model.Email
+            <a asp-controller="AccountSetting" asp-action="ChangeEmail"><i class="bi bi-vector-pen fs-5"></i></a>
+        </p>
+    </div>
+    <div class="col-12">
+        <p class="text-center">
+            Change Password
+            <a asp-controller="AccountSetting" asp-action="ChangePassword"><i class="bi bi-vector-pen fs-5"></i></a>
+        </p>
+    </div>
+</div>
+
+
