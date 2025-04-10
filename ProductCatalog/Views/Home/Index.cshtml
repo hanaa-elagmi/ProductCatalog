@@ -3,13 +3,13 @@
     ViewData["Title"] = "Products";
 }
 
-<div class="bg-white filtermenue row align-items-center p-2">
+<div class="bg-white filtermenue row align-items-center p-2 justify-content-between">
     <div class="col-6">
         <input type="text" class="form-control form-control-solid ps-14 search" name="search" value="" 
         placeholder="Search..." data-kt-search-element="input" fdprocessedid="8bv4wn" >
     </div>
-    <div class="col-2"></div>
-    <div class="col-md-4 ">
+  
+    <div class="col-4 ">
         <div>
             <select class="form-select" aria-label="Select example" id="categorySelect">
                 <option >Choose Category</option>
@@ -47,7 +47,7 @@
 
                 <div class="card-header">
                     <h3 class="card-title">
-                        @(item.Name.Length > 15 ? item.Name.Substring(0, 15) : item.Name)
+                        @(item.Name.Length > 15 ? item.Name.Substring(0, 10) : item.Name)
                     </h3>
                     
                     <div class="card-toolbar">

@@ -1,0 +1,42 @@
+﻿@model List<ExceptionLog>
+<div class="py-5">
+    <div class="table-responsive">
+        <table class="table table-row-bordered table-row-gray-300 gy-7">
+            <thead>
+                <tr class="fw-bold fs-6 text-gray-800">
+                    <th>
+                        Message
+                    </th>
+                    <th>
+                        Source
+                    </th>
+                    <th>
+                        Path
+                    </th>
+               
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Message)
+
+
+                        </td>
+                       
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Source)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Path)
+                        </td>
+                       
+                        
+                     
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>

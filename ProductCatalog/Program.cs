@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
 using ProductCatalog.Data;
+using ProductCatalog.Helpers;
 using ProductCatalog.Interfaces;
 using ProductCatalog.Models;
 using ProductCatalog.Reposatories;
@@ -38,11 +39,18 @@ namespace ProductCatalog
                 
                 })
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-
+            builder.Services.ConfigureApplicationCookie(options =>
+            {
+                //ãÏå ÇáÓíÔä
+                options.ExpireTimeSpan = TimeSpan.FromDays(15);
+                //ÊÌÏíÏ ÇáÓíÔä Øæá ãÇ ÇáãÓÊÎÏã ÔÛÇá
+                options.SlidingExpiration=true;
+            });
 
 			builder.Services.AddAuthorization();
 
 			var app = builder.Build();
+            app.UseExceptionLogging();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -58,21 +66,7 @@ namespace ProductCatalog
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            //app.Use(async (context, next) =>
-            //{
-            //    if (context.Request.Path.StartsWithSegments("/css") ||
-            //        context.Request.Path.StartsWithSegments("/js") ||
-            //        context.Request.Path.StartsWithSegments("/images"))
-            //    {
-            //        context.Request.Path = "/wwwroot" + context.Request.Path;
-            //    }
-            //    await next();
-            //});
-            //app.UseStaticFiles(new StaticFileOptions
-            //{
-            //    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")),
-            //    RequestPath = "/wwwroot"
-            //});
+            
            
 
 			app.UseRouting();

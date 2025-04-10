@@ -28,7 +28,7 @@ namespace ProductCatalog.Reposatories
             product.CreationDate = productVM.CreationDate;
             product.Duration = productVM.Duration;
             product.StartDate = productVM.StartDate;
-            product.UserId=userId;
+            product.UserName=userId;
             product.CategoryId = productVM.CategoryId;
             product.EndData= product.StartDate.AddDays(product.Duration);
             dbContext.Products.Add(product);
@@ -103,6 +103,20 @@ namespace ProductCatalog.Reposatories
         {
             var categories= dbContext.Categories.ToList();
             return categories;
+        }
+
+        public List<Product> EditStartDate()
+        {
+            var products= dbContext.Products.ToList();
+            foreach (var item in products)
+            {
+                item.StartDate = DateTime.Now;
+                item.EndData = item.StartDate.AddDays(item.Duration);
+                item.updatedDate = DateTime.Now;
+
+            }
+            dbContext.SaveChanges();
+            return products;
         }
     }
 }

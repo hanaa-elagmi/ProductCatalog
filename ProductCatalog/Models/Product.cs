@@ -16,8 +16,8 @@ namespace ProductCatalog.Models
         public string Image { get; set; }
         public bool IsDeleted { get; set; }
         
-        //user id
-        public string UserId { get; set; }
+        //user Name
+        public string UserName { get; set; }
         //nav prop
         [ForeignKey("Category")]
         public int CategoryId { get; set; }

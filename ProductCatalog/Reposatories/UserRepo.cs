@@ -24,14 +24,14 @@ namespace ProductCatalog.Reposatories
 
             if (userRole != null)
             {
-                // احذف العلاقة القديمة
+                
                 dbContext.UserRoles.Remove(userRole);
                 dbContext.SaveChanges();
 
-                // حدد الدور الجديد
+               
                 string newRoleId = (userRole.RoleId == "1") ? "2" : "1";
 
-                // أضف العلاقة الجديدة
+                
                 var newUserRole = new IdentityUserRole<string>
                 {
                     UserId = userId,

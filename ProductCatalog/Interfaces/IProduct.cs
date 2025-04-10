@@ -12,5 +12,7 @@ namespace ProductCatalog.Interfaces
         public Product GetProductById (int id);
         public List<Product> GetAdminsProducts();
         public List<Category> GetCategories();
+        public List<Product> EditStartDate();
+
     }
 }

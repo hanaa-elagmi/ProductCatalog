@@ -19,10 +19,30 @@ namespace ProductCatalog.Controllers.Dashboard
         {
             productRepo = ProductRepo;
         }
-        public IActionResult Index()
+        public IActionResult Index(PaginationViewModel pagination)
         {
             var Products=productRepo.GetAdminsProducts();
-            return View(Products);
+            pagination.Products = Products;
+
+            if (pagination.PageIndex < 1)
+            {
+                pagination.PageIndex = 1;
+            }
+          
+         
+
+            var totalProducts = pagination.Products.Count();
+
+            var totalPages = (int)Math.Ceiling(totalProducts / (double)8);
+
+            if (pagination.PageIndex > totalPages)
+            {
+                pagination.PageIndex = totalPages;
+            }
+
+            pagination.PageCount = totalPages;
+            pagination.Products = pagination.Products.Skip((pagination.PageIndex - 1) * 8).Take(8).ToList();
+            return View(pagination);
         }
 
         public IActionResult CreateProduct()
@@ -35,8 +55,10 @@ namespace ProductCatalog.Controllers.Dashboard
         [ValidateAntiForgeryToken]
         public IActionResult CreateProduct(ProductViewModel productViewModel)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (ModelState.IsValid && userId != null) 
+            var userName = User.FindFirstValue(ClaimTypes.Name);
+
+
+            if (ModelState.IsValid && userName != null) 
             {
               
                 //var userid = userId;
@@ -53,7 +75,7 @@ namespace ProductCatalog.Controllers.Dashboard
                     stream.Flush();
                 }
                 var url = $"{Request.Scheme}://{Request.Host}/Images/{fileName}";
-                 var myProduct=productRepo.AddProduct(productViewModel,userId,url);
+                 var myProduct=productRepo.AddProduct(productViewModel, userName, url);
 
 
 
@@ -102,7 +124,11 @@ namespace ProductCatalog.Controllers.Dashboard
             productRepo.DeleteProduct(id);
             return RedirectToAction(nameof(Index));
         }
-
+        public IActionResult EditStartDate()
+        {
+            productRepo.EditStartDate();
+            return RedirectToAction(nameof(Index));
+        }
 
     }
 }

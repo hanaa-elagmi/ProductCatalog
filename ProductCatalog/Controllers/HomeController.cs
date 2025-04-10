@@ -57,6 +57,6 @@ namespace ProductCatalog.Controllers
             var product = productRepo.GetProductById(id);
             return View(product);
         }
-        
+      
     }
 }
